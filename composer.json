@@ -1,0 +1,15 @@
+{
+  "name": "lottery",
+  "authors": [
+    {
+      "name": "姚斌",
+      "email": "yb3616@126.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Apps\\": "src/",
+      "Helpers\\": "helpers/"
+    }
+  }
+}
