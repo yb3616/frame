@@ -7,9 +7,17 @@
  */
 
 return [
+  'middlewares' => 'Apps/Middlewares/test',
   '/' => [
     'action' => 'Apps/Index/index',
     'method' => 'get',
-    'middlewares' => ['Apps/Middlewares/timmer'],
-  ]
+    'middlewares' => function($next) {
+      $next();
+      $this->response->withJson(['232a' => '222']);
+    }
+  ],
+  '/test' => function() {
+    $this->response->withJson(['foo'=>'bar'], 200);
+    // var_dump($this->request->get(['foo' , 'bar' ]));
+  }
 ];

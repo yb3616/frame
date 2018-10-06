@@ -72,15 +72,6 @@ class App
   public function router(array $rules, array $extra=[])
   {
     /**
-     * 开启调试模式
-     */
-    if ($this->_container['config']['app']['debug']) {
-      ini_set('display_errors',1);
-      ini_set('display_startup_errors',1);
-      error_reporting(-1);
-    }
-
-    /**
      * 将 $rules 中的规则导入 $extra
      */
     // 替换
@@ -95,10 +86,11 @@ class App
     }
 
     // 合并
-    if (!isset($extra['middlewares'])) {
-      $extra['middlewares'] = [];
-    }
+    $extra['middlewares'] = isset($extra['middlewares']) ? $extra['middlewares'] : [];
     if (isset($rules['middlewares'])) {
+      if (is_string($rules['middlewares']) || is_callable($rules['middlewares'])) {
+        $rules['middlewares'] = [$rules['middlewares']];
+      }
       $extra['middlewares'] = array_merge($extra['middlewares'], $rules['middlewares']);
       unset($rules['middlewares']);
     }
@@ -109,6 +101,9 @@ class App
     }
 
     foreach ($rules as $uri => $rule) {
+      if (is_string($rule) || is_callable($rule)) {
+        $rule = ['action' => $rule];
+      }
       // 跳过非预定参数
       if ('/' === substr($uri, 0, 1)) {
         // 拼接，并递归查找
@@ -150,12 +145,11 @@ class App
 
     $item = $this->_router_queue[$method][$uri];
     $func = $item['action'];
+    // 调用用户方法
     if (is_callable($func)) {
       // 闭包函数
-      $func->bindTo($this)();
-      return true;
+      $next = $func->bindTo($this);
     } else if (is_string($func)) {
-      // 调用用户方法
       // 字符串函数
       $next = function() use ($func){
         $temp = explode('/', $func);
@@ -168,10 +162,11 @@ class App
         }
         $c->$func();
       };
-      $this->run_middleware($item['middlewares'], $next);
-      return true;
+    } else {
+      return false;
     }
-    return false;
+    $this->run_middleware($item['middlewares'], $next);
+    return true;
   }
 
   /**

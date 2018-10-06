@@ -24,6 +24,11 @@ project/router.php
 
 ```php
 return [
+    '/uri' => 'namespace/class/method',
+];
+
+// OR
+return [
     '/uri' => ['action' => 'namespace/class/method'],
 ];
 ```
@@ -41,6 +46,11 @@ return [
 > 中间件按写入顺序执行。
 
 ```php
+return [
+    '/uri' => ['action' => 'n/c/m', 'middlewares' => 'n/c/m'],
+];
+
+// OR
 return [
     '/uri' => ['action' => 'n/c/m', 'middlewares' => ['n/c1/m1', 'n/c2/m2']],
 ];
@@ -190,11 +200,78 @@ $rows = $this->db
     ->delete();
 ```
 
-# 6. 应用程序
+# 6. Resquest
+获得请求参数
+
+## 6.1 get
+```php
+$foo = $this->request->get('foo');
+
+// OR
+$allGet = $this->request->get();
+
+// OR
+$array = $this->request->get('foo, bar');
+
+// OR
+$array = $this->request->get(['foo', 'bar']);
+```
+
+## 6.2 post
+```php
+$foo = $this->request->post('foo');
+
+// OR
+$allGet = $this->request->post();
+
+// OR
+$array = $this->request->post('foo, bar');
+
+// OR
+$array = $this->request->post(['foo', 'bar']);
+```
+
+### 6.3 json
+```php
+$foo = $this->request->json('foo');
+
+// OR
+$allGet = $this->request->json();
+
+// OR
+$array = $this->request->json('foo, bar');
+
+// OR
+$array = $this->request->json(['foo', 'bar']);
+```
+
+# 7. Response
+响应体
+
+## 7.1 写入状态码
+```php
+$this->response->withStatus(301);
+```
+
+# 7.2 写入响应头
+```php
+$this->response->withHeader('Content-Type', 'application/json; charset=utf-8');
+```
+
+# 7.3 输出 JSON
+可多次调用 `withJson` 已合并多个数组，最终将一起输出
+```php
+$this->response->withJson(['foo' => 'bar']);
+
+// OR
+$this->response->withJson(['foo' => 'bar'], 201);
+```
+
+# 8. 应用程序
 请开发人员，根据`PSR-4`自由组织代码结构，尽量保证一个方法不超过100行代码。
 > 命名空间为：namespace Apps;
 
-# 7. 容器与依赖注入
+# 9. 容器与依赖注入
 将第三方库注入`$app`变量中，就可以在应用程序或者闭包（包括中间件）中调用被注入的方法。
 
 比如，我写了一个DB类（`project/helpers/DB.php`），现在我想全局使用改类方法，为防止全局变量命名污染，将其注入`$app`类变量中（`$app->db = new \Helpers\DB()`），然后就可以在中间件以及应用程序中使用`$this->db`变量来操作数据库。

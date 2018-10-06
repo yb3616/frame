@@ -10,10 +10,9 @@ namespace Apps;
 
 class Middlewares
 {
-  public function timmer(\Closure $next)
+  public function test(\Closure $next)
   {
-    $now = microtime(true);
     $next();
-    echo '<hr/>Used '. (string)((microtime(true) - $now) * 1000) . ' ms';
+    $this->response->withJson(['hello' => 'world']);
   }
 }
