@@ -259,7 +259,7 @@ $this->response->withHeader('Content-Type', 'application/json; charset=utf-8');
 ```
 
 # 7.3 输出 JSON
-可多次调用 `withJson` 已合并多个数组，最终将一起输出
+可多次调用 `withJson` 以合并多个数组，最终将一起输出
 ```php
 $this->response->withJson(['foo' => 'bar']);
 
