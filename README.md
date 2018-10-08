@@ -61,8 +61,8 @@ return [
 ```php
 return [
     '/api' => [
-        '/foo' => ['action' => 'n/c1/m'],
-        '/bar' => ['action' => 'n/c2/m'],
+        '/foo' => 'n/c1/m',
+        '/bar' => 'n/c2/m',
     ],
 ];
 ```
@@ -73,15 +73,15 @@ return [
 ```php
 return [
     '/user' => [
-        'middlewares' => ['isLoggedIn'],
+        'middlewares' => 'isLoggedIn',
         'method' => 'post',
-        '/getUserName' => ['action' => 'n/c/m'],
-        '/logOut' => ['action' => 'n/c/m'],
+        '/getUserName' => 'n/c1/m',
+        '/logOut' => 'n/c2/m',
     ],
     '/guest' => [
-        'middlewares' => ['isGuest'],
-        '/login' => ['action' => 'n/c/m'],
-        '/register' => ['action' => 'n/c/m'],
+        'middlewares' => 'isGuest',
+        '/login' => 'n/c3/m',
+        '/register' => 'n/c4/m',
     ],
 ];
 ```
@@ -91,9 +91,9 @@ return [
 
 ```php
 return [
-    '/uri' => ['action' => function() {
+    '/uri' => 'action' => function() {
         echo 'Hello, There!';
-    }],
+    },
 ];
 ```
 
@@ -102,11 +102,11 @@ return [
 
 ```php
 return [
-    '/uri' => ['action' => 'n/c/m', 'middlewares' => [function($next) {
+    '/uri' => ['action' => 'n/c/m', 'middlewares' => function($next) {
         echo 'before';
         $next();
         echo 'after';
-    },],
+    }],
 ];
 ```
 
