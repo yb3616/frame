@@ -46,4 +46,5 @@ $app->router(require_once('../router.php'));
 $app->run();
 
 // 输出执行时间
-$app->response->withJson(['used' => (string)((microtime(true) - $now) * 1000).'ms']);
+// $app->response->withJson(['used' => (string)((microtime(true) - $now) * 1000).'ms']);
+$app->response->withHeader('Running',(string)((microtime(true) - $now) * 1000).'ms');
