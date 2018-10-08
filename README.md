@@ -61,7 +61,8 @@ return [
 ```php
 return [
     '/api' => [
-        'foo' => ['action' => 'n/c/m'],
+        '/foo' => ['action' => 'n/c1/m'],
+        '/bar' => ['action' => 'n/c2/m'],
     ],
 ];
 ```
