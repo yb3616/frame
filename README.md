@@ -57,6 +57,7 @@ return [
 ```
 
 ### 3.2.4 路由分组
+> 以下情况实际请求路径为 `/api/foo`, `/api/bar`
 
 ```php
 return [
